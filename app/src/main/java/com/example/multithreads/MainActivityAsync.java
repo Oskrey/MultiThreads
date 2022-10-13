@@ -23,7 +23,7 @@ public class MainActivityAsync extends AppCompatActivity {
         String text2 = input2.getText().toString();
         TextView output = findViewById(R.id.textViewOutput);
         if(text1.isEmpty() || text2.isEmpty()){
-            Toast.makeText(getApplicationContext(), "Введите данные", Toast.LENGTH_SHORT);
+            Toast.makeText(getApplicationContext(), "Введите данные", Toast.LENGTH_SHORT).show();
             return;
         }
         AsynkTask firstTask = new AsynkTask(output);
@@ -32,25 +32,34 @@ public class MainActivityAsync extends AppCompatActivity {
         AsynkTask secondTask = new AsynkTask(output);
         secondTask.executeOnExecutor(AsynkTask.THREAD_POOL_EXECUTOR,2,Integer.parseInt(text2));
     }
-    public void Click2(View v){
-        SetText(findViewById(R.id.editTextFirst),1);
-        SetText(findViewById(R.id.editTextSecond),2);
+    public void Click2(View v) {
+        EditText inputFirst = findViewById(R.id.editTextFirst);
+        EditText inputSecond = findViewById(R.id.editTextSecond);
 
-    }
-    public void SetText(EditText et, int j){
-
+        String textFirst = inputFirst.getText().toString();
+        String textSecond = inputSecond.getText().toString();
         TextView output = findViewById(R.id.textViewOutput);
-        String text1 = et.getText().toString();
-        StringBuilder out = null;
-
-        for (int i = 0; i < Integer.parseInt(text1);i++){
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e){}
-            out.append("Задача "+j+" прошла ").append(i).append(" запрос");
-            output.setText(out);
+        output.setText("");
+        if (textFirst.isEmpty() || textSecond.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Введите данные", Toast.LENGTH_LONG).show();
+            return;
         }
-        out.append("Задача "+j+" успешно выполнена");
-        output.setText(out);
+
+        for(int i = 0; i < Integer.parseInt(textFirst); i++){
+            try{
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {}
+            output.setText(output.getText() + "Задача 1 прошла " + i + " запрос\n");
+        }
+        output.setText(output.getText() + "Задача 1 выполнена успешно\n");
+
+        for(int i = 0; i < Integer.parseInt(textSecond); i++){
+            try{
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e) {}
+            output.setText(output.getText() + "Задача 2 прошла " + i + " запрос\n");
+        }
+        output.setText(output.getText() + "Задача 2 выполнена успешно\n");
     }
 }
